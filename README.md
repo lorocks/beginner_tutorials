@@ -34,3 +34,12 @@ Run each node in separate terminals
 ```
 ## cpplint Errors
 <chrono> is an unaprroved header which provides clock literals which is needed 
+
+
+# Generate Doxygen Documentation
+```bash
+# Download doxygen
+  sudo apt-get install doxygen
+# Rebuild documentation
+  doxygen dconfig
+```
