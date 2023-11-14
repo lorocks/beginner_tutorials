@@ -27,7 +27,21 @@ class MinimalPublisher : public rclcpp::Node {
   * @brief Construct a new Minimal Publisher object
   *  Create a publisher and publish messages to the topic "/topic" at 500ms intervals
   */
-  MinimalPublisher() : Node("minimal_publisher"), count_(0), frequency(500) {
+  MinimalPublisher() : Node("minimal_publisher"), count_(0) {
+    this->declare_parameter("pub_frequency", 750);
+    int para_freq = this->get_parameter("pub_frequency").as_int();
+    if (para_freq < 450){
+      RCLCPP_FATAL(this->get_logger(), "Publish time too fast...\n Selecting 750ms");
+      frequency = 750;
+    }
+    else if (para_freq > 3000){
+      RCLCPP_ERROR(this->get_logger(), "Publish time not optimal");
+      frequency = para_freq;
+    }
+    else{
+      RCLCPP_DEBUG(this->get_logger(), "Setting custom publish frequency");
+      frequency = para_freq;
+    }
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     service_ = this->create_service<cpp_service::srv::ChangeCounter>("change_counter", std::bind(&MinimalPublisher::change_counter, this, std::placeholders::_1, std::placeholders::_2));
     // service_ = this->create_service<cpp_service::srv::Change>("change_counter", &MinimalPublisher::change_counter);
