@@ -1,6 +1,7 @@
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch import LaunchDescription
+from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
     desc = LaunchDescription()
@@ -9,6 +10,11 @@ def generate_launch_description():
     talker = Node(
         package="cpp_pubsub",
         executable="talker",
+        parameters=[
+            {
+                "pub_frequency": LaunchConfiguration("pub_frequency")
+            },
+        ]
     )
 
     listener = Node(
