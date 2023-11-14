@@ -44,7 +44,6 @@ class MinimalPublisher : public rclcpp::Node {
     }
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     service_ = this->create_service<cpp_service::srv::ChangeCounter>("change_counter", std::bind(&MinimalPublisher::change_counter, this, std::placeholders::_1, std::placeholders::_2));
-    // service_ = this->create_service<cpp_service::srv::Change>("change_counter", &MinimalPublisher::change_counter);
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(frequency), std::bind(&MinimalPublisher::timer_callback, this));
   }
@@ -62,6 +61,12 @@ class MinimalPublisher : public rclcpp::Node {
     publisher_->publish(message);
   }
 
+  /**
+   * @brief A member function that is called when the service is initiated.
+   * The function changes the count number being publsihed by the talker
+   * @param request Service request parameter that holds the parameters input to the service
+   * @param response Service response parameter that holds the output from the service
+   */
   void change_counter(const std::shared_ptr<cpp_service::srv::ChangeCounter::Request> request,
                       std::shared_ptr<cpp_service::srv::ChangeCounter::Response> response){
       count_ = request->number;
@@ -82,6 +87,10 @@ class MinimalPublisher : public rclcpp::Node {
    */
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
 
+  /**
+   * @brief Create a service shared pointer from rclcpp to create a service that changes the count value
+   * 
+   */
   rclcpp::Service<cpp_service::srv::ChangeCounter>::SharedPtr service_;
 
   /**
@@ -90,6 +99,10 @@ class MinimalPublisher : public rclcpp::Node {
    */
   size_t count_;
 
+  /**
+   * @brief Create a frenquency variable from talker publish frequency
+   * 
+   */
   int frequency;
 };
 
