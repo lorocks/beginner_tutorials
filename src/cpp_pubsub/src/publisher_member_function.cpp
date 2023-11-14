@@ -49,8 +49,8 @@ class MinimalPublisher : public rclcpp::Node {
 
   void change_counter(const std::shared_ptr<beginner_tutorials::srv::ChangeCounter::Request> request_,
                       std::shared_ptr<beginner_tutorials::srv::ChangeCounter::Response> response_  ){
-      count_.data = request_->after;
-      RCLCPP_WARN(this->get_logger(), "Counter has been changed to %s", request_->after.c_str());
+      count_.data = request_->number;
+      RCLCPP_WARN(this->get_logger(), "Counter has been changed to %s", request_->number.c_str());
       response->status = true;
       RCLCPP_INFO(this->get_logger(), "Service response %s", response->status.c_str());
   }
