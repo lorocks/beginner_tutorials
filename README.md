@@ -64,7 +64,7 @@ If the service call throws an error, source the underlay using
 
 ## Run using Launch File
 Launch parameters
- - ```pub_frequency``` frequency of publishing messages by talker node, deafult value = 750
+ - ```pub_frequency``` frequency of publishing messages by talker node, default value = 750
 ```bash
 # ros2 launch command
   ros2 launch cpp_pubsub cpp_launch.py 'pub_frequency:=< enter frequency value>'
