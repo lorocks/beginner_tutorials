@@ -29,6 +29,7 @@ class MinimalPublisher : public rclcpp::Node {
   MinimalPublisher() : Node("minimal_publisher"), count_(0) {
     using std::literals::chrono_literals::operator""ms;
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+    // service_ = thix->create_service
     timer_ = this->create_wall_timer(
         500ms, std::bind(&MinimalPublisher::timer_callback, this));
   }
