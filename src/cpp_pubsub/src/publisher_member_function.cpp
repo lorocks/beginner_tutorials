@@ -27,13 +27,12 @@ class MinimalPublisher : public rclcpp::Node {
   * @brief Construct a new Minimal Publisher object
   *  Create a publisher and publish messages to the topic "/topic" at 500ms intervals
   */
-  MinimalPublisher() : Node("minimal_publisher"), count_(0) {
-    using std::literals::chrono_literals::operator""ms;
+  MinimalPublisher() : Node("minimal_publisher"), count_(0), frequency(500) {
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     service_ = this->create_service<cpp_service::srv::ChangeCounter>("change_counter", std::bind(&MinimalPublisher::change_counter, this, std::placeholders::_1, std::placeholders::_2));
     // service_ = this->create_service<cpp_service::srv::Change>("change_counter", &MinimalPublisher::change_counter);
     timer_ = this->create_wall_timer(
-        500ms, std::bind(&MinimalPublisher::timer_callback, this));
+        std::chrono::milliseconds(frequency), std::bind(&MinimalPublisher::timer_callback, this));
   }
 
  private:
@@ -76,6 +75,8 @@ class MinimalPublisher : public rclcpp::Node {
    * 
    */
   size_t count_;
+
+  int frequency;
 };
 
 /**
