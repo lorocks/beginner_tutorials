@@ -1,0 +1,5 @@
+./cpp_pubsub/src/publisher_member_function.cpp:12:  <chrono> is an unapproved C++11 header.  [build/c++11] [5]
+Done processing ./cpp_pubsub/src/publisher_member_function.cpp
+./cpp_pubsub/src/subscriber_member_function.cpp:12:  <chrono> is an unapproved C++11 header.  [build/c++11] [5]
+Done processing ./cpp_pubsub/src/subscriber_member_function.cpp
+Total errors found: 2
