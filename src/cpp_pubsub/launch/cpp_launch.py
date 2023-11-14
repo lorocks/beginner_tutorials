@@ -2,9 +2,9 @@ from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch import LaunchDescription
 
-def generate_launch_descriptions():
+def generate_launch_description():
     desc = LaunchDescription()
-    frequency_para = DeclareLaunchArgument("pub_frequency", 750)
+    frequency_para = DeclareLaunchArgument(name="pub_frequency", default_value='750')
 
     talker = Node(
         package="cpp_pubsub",
