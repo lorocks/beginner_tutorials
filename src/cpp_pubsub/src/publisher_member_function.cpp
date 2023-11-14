@@ -29,7 +29,7 @@ class MinimalPublisher : public rclcpp::Node {
   MinimalPublisher() : Node("minimal_publisher"), count_(0) {
     using std::literals::chrono_literals::operator""ms;
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
-    // service_ = thix->create_service
+    service_ = this->create_service<beginner_tutorials::srv::ChangeCounter>("change_counter_value", std::bind(&MinimalPublisher::change_counter, this, std::placeholders::_1, std::placeholders::_2));
     timer_ = this->create_wall_timer(
         500ms, std::bind(&MinimalPublisher::timer_callback, this));
   }
@@ -45,6 +45,14 @@ class MinimalPublisher : public rclcpp::Node {
     RCLCPP_INFO(this->get_logger(), "Publishing message: '%s'",
                 message.data.c_str());
     publisher_->publish(message);
+  }
+
+  void change_counter(const std::shared_ptr<beginner_tutorials::srv::ChangeCounter::Request> request_,
+                      std::shared_ptr<beginner_tutorials::srv::ChangeCounter::Response> response_  ){
+      count_.data = request_->after;
+      RCLCPP_WARN(this->get_logger(), "Counter has been changed to %s", request_->after.c_str());
+      response->status = true;
+      RCLCPP_INFO(this->get_logger(), "Service response %s", response->status.c_str());
   }
 
   /**
