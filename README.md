@@ -11,6 +11,14 @@ The repository contains:
 
 ## Initial Steps
 ```bash
+# Clone the github repository
+# Using http://
+  git clone https://github.com/lorocks/beginner_tutorials.git
+# Using SSH
+  git clone git@github.com:lorocks/beginner_tutorials.git
+
+# Change to workspace directory
+  cd beginner_tutorials/  
 # Build the ROS2 project
   colcon build
 # Source the underlay
@@ -71,3 +79,10 @@ Launch parameters
 # Rebuild documentation
   doxygen dconfig
 ```
+
+# Results
+There are three folder inside the /results directory and they contain
+<br>
+ - cpp_pubsub: cppcheck and cpplint results
+ - launch: image of successful launching of nodes talker and listener
+ - rqt_console: image of rqt_console with logger levels shown
