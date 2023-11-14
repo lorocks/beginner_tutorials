@@ -1,7 +1,7 @@
 """@file cpp_launch.py
 @author Lowell Lobo
 @brief Launch file to start up talker and listener nodes
-
+@copyright Copyright (c) Lowell Lobo 2023
 """
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
