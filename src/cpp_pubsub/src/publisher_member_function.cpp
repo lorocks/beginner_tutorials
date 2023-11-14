@@ -29,7 +29,7 @@ class MinimalPublisher : public rclcpp::Node {
   MinimalPublisher() : Node("minimal_publisher"), count_(0) {
     using std::literals::chrono_literals::operator""ms;
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
-    service_ = this->create_service<beginner_tutorials::srv::ChangeCounter>("change_counter_value", std::bind(&MinimalPublisher::change_counter, this, std::placeholders::_1, std::placeholders::_2));
+    service_ = this->create_service<cpp_pubsub::srv::ChangeCounter>("change_counter_value", std::bind(&MinimalPublisher::change_counter, this, std::placeholders::_1, std::placeholders::_2));
     timer_ = this->create_wall_timer(
         500ms, std::bind(&MinimalPublisher::timer_callback, this));
   }
@@ -47,8 +47,8 @@ class MinimalPublisher : public rclcpp::Node {
     publisher_->publish(message);
   }
 
-  void change_counter(const std::shared_ptr<beginner_tutorials::srv::ChangeCounter::Request> request_,
-                      std::shared_ptr<beginner_tutorials::srv::ChangeCounter::Response> response_  ){
+  void change_counter(const std::shared_ptr<cpp_pubsub::srv::ChangeCounter::Request> request_,
+                      std::shared_ptr<cpp_pubsub::srv::ChangeCounter::Response> response_  ){
       count_.data = request_->number;
       RCLCPP_WARN(this->get_logger(), "Counter has been changed to %s", request_->number.c_str());
       response->status = true;
