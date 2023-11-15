@@ -19,7 +19,11 @@ The repository contains:
 
 # Change to workspace directory
   cd beginner_tutorials/  
-# Build the ROS2 project
+# Build the ROS2 project sequentially
+  colcon build --packages-select cpp_service
+# Source the underlay to reduce error in compilation
+  source install/setup.sh
+# Rebuild the entire project
   colcon build
 # Source the underlay
   source install/setup.sh
