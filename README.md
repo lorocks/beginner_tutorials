@@ -8,6 +8,7 @@ The repository uses ROS Humble
 The repository contains:
  - Publisher/Subscriber Example
  - Services_Logging_Launch Example
+ - tf2_unitTesting_rosBagFiles Example
 
 ## Initial Steps
 ```bash
@@ -75,6 +76,18 @@ Launch parameters
 ```
 ## cpplint Errors
 <chrono> is an unaprroved header which provides clock literals which is needed 
+
+
+# Part3_Release: tf2_unitTests_bagFiles
+This part contains a tf2 implementation where static frames are being published.
+
+## Verify tf2 Results
+```bash
+# Print the frames to the console
+  ros2 run tf2_ros tf2_echo world talk
+# tf2 view frame tool
+  ros2 run tf2_tools view_frames
+```
 
 # Generate Doxygen Documentation
 ```bash
