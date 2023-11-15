@@ -14,6 +14,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(cpp_service REQUIRED)
 find_package(tf2 REQUIRED)
@@ -23,7 +24,7 @@ include_directories(include)
 
 
 add_executable(talker src/publisher_member_function.cpp)
-ament_target_dependencies(talker rclcpp std_msgs cpp_service)
+ament_target_dependencies(talker rclcpp std_msgs cpp_service tf2 tf2_ros geometry_msgs)
 
 add_executable(listener src/subscriber_member_function.cpp)
 ament_target_dependencies(listener rclcpp std_msgs)
