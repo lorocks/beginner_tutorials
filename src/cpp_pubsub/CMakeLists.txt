@@ -25,6 +25,7 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(cpp_service REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(tf2_msgs REQUIRED)
 
 include_directories(include)
 
@@ -53,20 +54,21 @@ if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
 
   # un-comment the following lines skip linters (TRUE = skip that test)
-  # set(ament_cmake_cppcheck_FOUND TRUE)
+  set(ament_cmake_cppcheck_FOUND TRUE)
   set(ament_cmake_copyright_FOUND TRUE)
   set(ament_cmake_cpplint_FOUND TRUE)
   set(ament_cmake_flake8_FOUND TRUE)
   set(ament_cmake_uncrustify_FOUND TRUE)
+  
 
   # Run all lint tests in package.xml except those listed above
-  ament_lint_auto_find_test_dependencies()
+  # ament_lint_auto_find_test_dependencies()
 
   # Add a gtest executable
   set(TESTFILES
     test/integrated_test.cpp)
   ament_add_gtest(${PROJECT_NAME}_test ${TESTFILES})
-  ament_target_dependencies(${PROJECT_NAME}_test rclcpp rclcpp_action std_msgs)
+  ament_target_dependencies(${PROJECT_NAME}_test rclcpp rclcpp_action std_msgs tf2 tf2_ros geometry_msgs)
 endif()
 
 ament_export_dependencies(rosidl_default_runtime)

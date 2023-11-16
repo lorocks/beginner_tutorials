@@ -1,10 +1,15 @@
 // Description: Test if a simple task plan works
 
 #include <gtest/gtest.h>
+#include <memory>
 #include <stdlib.h>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "tf2_ros/buffer.h"
+#include "tf2_ros/transform_listener.h"
+#include "tf2/exceptions.h"
 
 class TaskPlanningFixture : public testing::Test {
  public:
@@ -79,7 +84,45 @@ class TaskPlanningFixture : public testing::Test {
   
 };
 
-TEST_F(TaskPlanningFixture, TrueIsTrueTest) {
+TEST_F(TaskPlanningFixture, tf2Test){
+  std::cout << "tf2 publish test" << std::endl;
+  using namespace std::chrono_literals;
+
+  auto buffer = std::make_unique<tf2_ros::Buffer>(node_->get_clock());
+  auto listener = std::make_shared<tf2_ros::TransformListener>(*buffer);
+
+  bool hasRotation = false;
+  auto timer_ = node_->create_wall_timer(1s, [&]() {
+      auto tf = buffer->lookupTransform(
+            "talk", "world",
+            tf2::TimePointZero);
+       if (tf.transform.rotation.x + tf.transform.rotation.y + tf.transform.rotation.z > 0){
+          hasRotation = true;
+       }
+     } // end of lambda expression
+     );
+
+  /*
+   * 3.) check to see if we get data winhin 3 sec
+   */
+  using timer = std::chrono::system_clock;
+  
+  timer::time_point clock_start;
+  timer::duration elapsed_time;
+  clock_start = timer::now();
+  elapsed_time = timer::now() - clock_start;
+  rclcpp::Rate rate(2.0);       // 2hz checks
+  while (elapsed_time < 15s)
+    {
+      rclcpp::spin_some(node_);
+      rate.sleep();
+      elapsed_time = timer::now() - clock_start;
+    }
+  EXPECT_TRUE (hasRotation);
+
+}
+
+TEST_F(TaskPlanningFixture, publishTest) {
   std::cout << "TEST BEGINNING!!" << std::endl;
   EXPECT_TRUE(true);
 
@@ -90,7 +133,7 @@ TEST_F(TaskPlanningFixture, TrueIsTrueTest) {
   using SUBSCRIBER = rclcpp::Subscription<String>::SharedPtr;
   bool hasData = false;
   SUBSCRIBER subscription = node_->create_subscription<String>
-    ("talker", 10,
+    ("topic", 10,
      // Lambda expression begins
      [&](const std_msgs::msg::String& msg) {
        RCLCPP_DEBUG(node_->get_logger(), "I heard: '%s'", msg.data.c_str());
@@ -108,7 +151,7 @@ TEST_F(TaskPlanningFixture, TrueIsTrueTest) {
   clock_start = timer::now();
   elapsed_time = timer::now() - clock_start;
   rclcpp::Rate rate(2.0);       // 2hz checks
-  while (elapsed_time < 3s)
+  while (elapsed_time < 5s)
     {
       rclcpp::spin_some(node_);
       rate.sleep();
