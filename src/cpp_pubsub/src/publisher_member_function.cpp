@@ -15,9 +15,9 @@
 #include <string>
 
 #include "cpp_service/srv/change_counter.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2_ros/static_transform_broadcaster.h"
 
@@ -55,7 +55,8 @@ class MinimalPublisher : public rclcpp::Node {
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(frequency),
         std::bind(&MinimalPublisher::timer_callback, this));
-    tf_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    tf_broadcaster_ =
+        std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
     this->transform_publish();
   }
 
@@ -92,10 +93,11 @@ class MinimalPublisher : public rclcpp::Node {
   }
 
   /**
-   * @brief MinimalPublisher member function to create a tf2 frame and publish it
-   * 
+   * @brief MinimalPublisher member function to create a tf2 frame and publish
+   * it
+   *
    */
-  void transform_publish(){
+  void transform_publish() {
     geometry_msgs::msg::TransformStamped transform;
 
     transform.header.stamp = this->get_clock()->now();
@@ -114,7 +116,6 @@ class MinimalPublisher : public rclcpp::Node {
     transform.transform.rotation.w = q.w();
 
     tf_broadcaster_->sendTransform(transform);
-
   }
 
   /**
@@ -140,7 +141,7 @@ class MinimalPublisher : public rclcpp::Node {
 
   /**
    * @brief Create a shared pointer for static tf broadcasting
-   * 
+   *
    */
   std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_broadcaster_;
 
