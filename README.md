@@ -102,11 +102,21 @@ Unit tests are written to perform Level 2 unit tests and a ros2 bag record metho
 ```bash
 # Launch bag
   ros2 launch cpp_pubsub cpp_launch_bag.py
-# Replay bag with talker node
-  ros2 bag play ./results/ros2_bag
+# Launch file but disable ros2 bag
+  ros2 launch cpp_pubsub cpp_launch_bag.py ros_bag:=False
 # Check information
   ros2 bag info ./results/ros2_bag
+
+# Testing the ros2 bag
+# Start listener node
+  ros2 run cpp_pubsub listener
+# Replay bag with talker node
+  ros2 bag play ./results/ros2_bag
 ```
+
+## cpplint Errors
+<chrono> is an unaprroved header which provides clock literals which is needed 
+
 
 # Generate Doxygen Documentation
 ```bash
