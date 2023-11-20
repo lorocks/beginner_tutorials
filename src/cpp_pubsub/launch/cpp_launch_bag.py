@@ -18,6 +18,7 @@ def generate_launch_description():
 
 
     delete_bag = ExecuteProcess(
+        condition=IfCondition(LaunchConfiguration('ros_bag')),
         cmd=["rm -rf ./results/ros2_bag"],
         shell = True
     )
