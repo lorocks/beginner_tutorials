@@ -1,4 +1,13 @@
-
+/**
+ * @file integrated_test.cpp
+ * @author Lowell Lobo
+ * @brief Level 2 tests for cpp_pubsub package
+ * @version 0.1
+ * @date 2023-11-20
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include <gtest/gtest.h>
 #include <memory>
 #include <stdlib.h>
@@ -10,6 +19,10 @@
 #include "tf2_ros/transform_listener.h"
 #include "tf2/exceptions.h"
 
+/**
+ * @brief Test fixture to start and run tests on a chosen node
+ * 
+ */
 class TaskPlanningFixture : public testing::Test {
  public:
   TaskPlanningFixture()
@@ -83,6 +96,10 @@ class TaskPlanningFixture : public testing::Test {
   
 };
 
+/**
+ * @brief Construct a new test f object
+ * Test for tf2 frames broadcasting
+ */
 TEST_F(TaskPlanningFixture, tf2Test){
   std::cout << "tf2 publish test" << std::endl;
   using namespace std::chrono_literals;
@@ -101,9 +118,6 @@ TEST_F(TaskPlanningFixture, tf2Test){
      } // end of lambda expression
      );
 
-  /*
-   * 3.) check to see if we get data winhin 3 sec
-   */
   using timer = std::chrono::system_clock;
   
   timer::time_point clock_start;
@@ -121,13 +135,14 @@ TEST_F(TaskPlanningFixture, tf2Test){
 
 }
 
+/**
+ * @brief Construct a new test f object
+ * Test for talker node publishing
+ */
 TEST_F(TaskPlanningFixture, publishTest) {
   std::cout << "TEST BEGINNING!!" << std::endl;
   EXPECT_TRUE(true);
 
-  /*
-   * 2.) subscribe to the topic 
-   */
   using std_msgs::msg::String;
   using SUBSCRIBER = rclcpp::Subscription<String>::SharedPtr;
   bool hasData = false;
@@ -140,9 +155,6 @@ TEST_F(TaskPlanningFixture, publishTest) {
      } // end of lambda expression
      );
 
-  /*
-   * 3.) check to see if we get data winhin 3 sec
-   */
   using timer = std::chrono::system_clock;
   using namespace std::chrono_literals;
   timer::time_point clock_start;
