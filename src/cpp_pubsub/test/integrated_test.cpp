@@ -101,14 +101,14 @@ class TaskPlanningFixture : public testing::Test {
  */
 TEST_F(TaskPlanningFixture, tf2Test) {
   std::cout << "tf2 publish test" << std::endl;
-  using namespace std::chrono_literals;
+  // using namespace std::chrono_literals;
 
   auto buffer = std::make_unique<tf2_ros::Buffer>(node_->get_clock());
   auto listener = std::make_shared<tf2_ros::TransformListener>(*buffer);
 
   bool hasRotation = false;
   auto timer_ = node_->create_wall_timer(
-      1s,
+      std::chrono::seconds(1),
       [&]() {
         auto tf = buffer->lookupTransform("talk", "world", tf2::TimePointZero);
         if (tf.transform.rotation.x + tf.transform.rotation.y +
@@ -116,8 +116,7 @@ TEST_F(TaskPlanningFixture, tf2Test) {
             0) {
           hasRotation = true;
         }
-      }  // end of lambda expression
-  );
+      });
 
   using timer = std::chrono::system_clock;
 
@@ -151,17 +150,15 @@ TEST_F(TaskPlanningFixture, publishTest) {
       [&](const std_msgs::msg::String& msg) {
         RCLCPP_DEBUG(node_->get_logger(), "I heard: '%s'", msg.data.c_str());
         hasData = true;
-      }  // end of lambda expression
-  );
+      });
 
   using timer = std::chrono::system_clock;
-  using namespace std::chrono_literals;
   timer::time_point clock_start;
   timer::duration elapsed_time;
   clock_start = timer::now();
   elapsed_time = timer::now() - clock_start;
   rclcpp::Rate rate(2.0);  // 2hz checks
-  while (elapsed_time < 5s) {
+  while (elapsed_time < std::chrono::seconds(5)) {
     rclcpp::spin_some(node_);
     rate.sleep();
     elapsed_time = timer::now() - clock_start;
