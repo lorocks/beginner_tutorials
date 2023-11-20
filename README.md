@@ -132,3 +132,5 @@ There are three folder inside the /results directory and they contain
  - cpp_pubsub: cppcheck and cpplint results
  - launch: image of successful launching of nodes talker and listener
  - rqt_console: image of rqt_console with logger levels shown
+ - ros2_bag: published messages recorded using ros2 bag
+ - tf2frames: output from running view_frame in tf2_tools
