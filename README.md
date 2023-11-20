@@ -79,7 +79,8 @@ Launch parameters
 
 
 # Part3_Release: tf2_unitTests_bagFiles
-This part contains a tf2 implementation where static frames are being published.
+This part contains a tf2 implementation where static frames are being published. 
+Unit tests are written to perform Level 2 unit tests and a ros2 bag record method has been implemented
 
 ## Verify tf2 Results
 ```bash
@@ -87,6 +88,24 @@ This part contains a tf2 implementation where static frames are being published.
   ros2 run tf2_ros tf2_echo world talk
 # tf2 view frame tool
   ros2 run tf2_tools view_frames
+```
+
+## Unit Tests
+```bash
+# Run the test
+  colcon test
+# View results
+  nano log/latest_test/cpp_pubsub/stdout_stderr.log 
+```
+
+## ROS2 Bag
+```bash
+# Launch bag
+  ros2 launch cpp_pubsub cpp_launch_bag.py
+# Replay bag with talker node
+  ros2 bag play ./results/ros2_bag
+# Check information
+  ros2 bag info ./results/ros2_bag
 ```
 
 # Generate Doxygen Documentation

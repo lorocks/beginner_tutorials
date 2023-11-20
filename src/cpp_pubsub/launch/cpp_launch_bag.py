@@ -18,7 +18,7 @@ def generate_launch_description():
 
 
     delete_bag = ExecuteProcess(
-        cmd=["rm -rf ./results/ros2bag"],
+        cmd=["rm -rf ./results/ros2_bag"],
         shell = True
     )
 

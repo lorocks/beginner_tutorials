@@ -67,7 +67,7 @@ class TaskPlanningFixture : public testing::Test {
     cmdInfo_ss << "ros2 node info "
                << "/" << node_name << " > /dev/null 2> /dev/null";
     char execName[16];
-    snprintf(execName, 16, "%s",
+    snprintf(execName, sizeof(execName), "%s",
              exec_name);  // pkill uses exec name <= 15 char only
     killCmd_ss << "pkill --signal SIGINT " << execName
                << " > /dev/null 2> /dev/null";
@@ -125,7 +125,7 @@ TEST_F(TaskPlanningFixture, tf2Test) {
   clock_start = timer::now();
   elapsed_time = timer::now() - clock_start;
   rclcpp::Rate rate(2.0);  // 2hz checks
-  while (elapsed_time < 15s) {
+  while (elapsed_time < std::chrono::seconds(15)) {
     rclcpp::spin_some(node_);
     rate.sleep();
     elapsed_time = timer::now() - clock_start;
