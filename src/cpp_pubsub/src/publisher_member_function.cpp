@@ -2,7 +2,7 @@
  * @file publisher_member_function.cpp
  * @author Lowell Lobo
  * @brief A minimal publisher node for ros2 that publishes the message "Lowell's
- * message numeber: {iterative_number}"
+ * message numeber: {iterative_number}" and also publishes tf2 frames
  * @version 0.1
  * @date 2023-11-07
  *
@@ -91,6 +91,10 @@ class MinimalPublisher : public rclcpp::Node {
                 response->status.c_str());
   }
 
+  /**
+   * @brief MinimalPublisher member function to create a tf2 frame and publish it
+   * 
+   */
   void transform_publish(){
     geometry_msgs::msg::TransformStamped transform;
 
@@ -134,6 +138,10 @@ class MinimalPublisher : public rclcpp::Node {
    */
   rclcpp::Service<cpp_service::srv::ChangeCounter>::SharedPtr service_;
 
+  /**
+   * @brief Create a shared pointer for static tf broadcasting
+   * 
+   */
   std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_broadcaster_;
 
   /**

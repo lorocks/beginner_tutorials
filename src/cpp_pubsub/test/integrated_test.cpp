@@ -1,4 +1,3 @@
-// Description: Test if a simple task plan works
 
 #include <gtest/gtest.h>
 #include <memory>
