@@ -4,3 +4,5 @@ log/
 src/.vscode/
 .vscode/
 docs/
+.cache/
+src/cpp_pubsub/.cache/

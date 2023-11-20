@@ -2,7 +2,7 @@
  * @file publisher_member_function.cpp
  * @author Lowell Lobo
  * @brief A minimal publisher node for ros2 that publishes the message "Lowell's
- * message numeber: {iterative_number}"
+ * message numeber: {iterative_number}" and also publishes tf2 frames
  * @version 0.1
  * @date 2023-11-07
  *
@@ -15,8 +15,11 @@
 #include <string>
 
 #include "cpp_service/srv/change_counter.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "tf2/LinearMath/Quaternion.h"
+#include "tf2_ros/static_transform_broadcaster.h"
 
 /**
  * @brief MinimalPublisher class that inherits form the Node class in rclcpp
@@ -52,6 +55,9 @@ class MinimalPublisher : public rclcpp::Node {
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(frequency),
         std::bind(&MinimalPublisher::timer_callback, this));
+    tf_broadcaster_ =
+        std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    this->transform_publish();
   }
 
  private:
@@ -87,6 +93,32 @@ class MinimalPublisher : public rclcpp::Node {
   }
 
   /**
+   * @brief MinimalPublisher member function to create a tf2 frame and publish
+   * it
+   *
+   */
+  void transform_publish() {
+    geometry_msgs::msg::TransformStamped transform;
+
+    transform.header.stamp = this->get_clock()->now();
+    transform.header.frame_id = "world";
+    transform.child_frame_id = "talk";
+
+    transform.transform.translation.x = 2;
+    transform.transform.translation.y = 3;
+    transform.transform.translation.z = 1;
+
+    tf2::Quaternion q;
+    q.setRPY(0, 3.14, 1.57);
+    transform.transform.rotation.x = q.x();
+    transform.transform.rotation.y = q.y();
+    transform.transform.rotation.z = q.z();
+    transform.transform.rotation.w = q.w();
+
+    tf_broadcaster_->sendTransform(transform);
+  }
+
+  /**
    * @brief Create a timer shared pointer from rclcpp to be used in
    * implementation
    *
@@ -106,6 +138,12 @@ class MinimalPublisher : public rclcpp::Node {
    *
    */
   rclcpp::Service<cpp_service::srv::ChangeCounter>::SharedPtr service_;
+
+  /**
+   * @brief Create a shared pointer for static tf broadcasting
+   *
+   */
+  std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_broadcaster_;
 
   /**
    * @brief Create a count variable to increment the message number in published

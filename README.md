@@ -8,6 +8,7 @@ The repository uses ROS Humble
 The repository contains:
  - Publisher/Subscriber Example
  - Services_Logging_Launch Example
+ - tf2_unitTesting_rosBagFiles Example
 
 ## Initial Steps
 ```bash
@@ -19,7 +20,11 @@ The repository contains:
 
 # Change to workspace directory
   cd beginner_tutorials/  
-# Build the ROS2 project
+# Build the ROS2 project sequentially
+  colcon build --packages-select cpp_service
+# Source the underlay to reduce error in compilation
+  source install/setup.sh
+# Rebuild the entire project
   colcon build
 # Source the underlay
   source install/setup.sh
@@ -71,6 +76,47 @@ Launch parameters
 ```
 ## cpplint Errors
 <chrono> is an unaprroved header which provides clock literals which is needed 
+
+
+# Part3_Release: tf2_unitTests_bagFiles
+This part contains a tf2 implementation where static frames are being published. 
+Unit tests are written to perform Level 2 unit tests and a ros2 bag record method has been implemented
+
+## Verify tf2 Results
+```bash
+# Print the frames to the console
+  ros2 run tf2_ros tf2_echo world talk
+# tf2 view frame tool
+  ros2 run tf2_tools view_frames
+```
+
+## Unit Tests
+```bash
+# Run the test
+  colcon test
+# View results
+  nano log/latest_test/cpp_pubsub/stdout_stderr.log 
+```
+
+## ROS2 Bag
+```bash
+# Launch bag
+  ros2 launch cpp_pubsub cpp_launch_bag.py
+# Launch file but disable ros2 bag
+  ros2 launch cpp_pubsub cpp_launch_bag.py ros_bag:=False
+# Check information
+  ros2 bag info ./results/ros2_bag
+
+# Testing the ros2 bag
+# Start listener node
+  ros2 run cpp_pubsub listener
+# Replay bag with talker node
+  ros2 bag play ./results/ros2_bag
+```
+
+## cpplint Errors
+<chrono> is an unaprroved header which provides clock literals which is needed 
+
 
 # Generate Doxygen Documentation
 ```bash
